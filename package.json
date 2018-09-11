@@ -1,0 +1,24 @@
+{
+  "name": "muhb",
+  "version": "0.0.0",
+  "description": "A simple set of functions for coding easy to read HTTP requests.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -b --no-diff test/spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/GCSBOSS/muhb.git"
+  },
+  "keywords": [
+    "http",
+    "request",
+    "simple"
+  ],
+  "author": "gcsboss",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/GCSBOSS/muhb/issues"
+  },
+  "homepage": "https://gitlab.com/GCSBOSS/muhb#readme"
+}
