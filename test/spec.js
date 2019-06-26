@@ -68,3 +68,37 @@ describe('Verbs', function(){
     });
 
 });
+
+describe('Automatic Headers', function(){
+
+    it('should generate automatic headers', async function(){
+        let { body } = await muhb.post(HTTPBIN_URL + '/post');
+        let o = JSON.parse(body);
+        assert(o.headers.Date);
+        assert(!o.headers['Content-Type']);
+        assert(!o.headers['Content-Length']);
+    });
+
+    it('should generate content length and type headers when body is present', async function(){
+        let { body } = await muhb.post(HTTPBIN_URL + '/post', 'haha');
+        let o = JSON.parse(body);
+        assert(o.headers.Date);
+        assert.strictEqual(o.headers['Content-Type'], 'application/octet-stream');
+        assert.strictEqual(o.headers['Content-Length'], '4');
+    });
+
+    it('should priorize user headers', async function(){
+        let { body } = await muhb.post(HTTPBIN_URL + '/post', {'Content-Type': 'text/plain'}, 'haha');
+        let o = JSON.parse(body);
+        assert.strictEqual(o.headers['Content-Type'], 'text/plain');
+    });
+
+    it('should not generate automatic headers when specified', async function(){
+        let { body } = await muhb.post(HTTPBIN_URL + '/post', {'--no-auto': true}, 'haha');
+        let o = JSON.parse(body);
+        assert(!o.headers.Date);
+        assert(!o.headers['Content-Type']);
+        assert(!o.headers['Content-Length']);
+    });
+
+});

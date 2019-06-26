@@ -1,4 +1,7 @@
 plugins:
+  eslint:
+    enabled: true
+    channel: "eslint-5"
   duplication:
     enabled: true
     config:
