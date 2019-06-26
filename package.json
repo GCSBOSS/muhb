@@ -1,24 +1,29 @@
 {
-  "name": "muhb",
-  "version": "0.0.2",
-  "description": "A simple set of functions for coding easy to read HTTP requests.",
-  "main": "lib/index.js",
-  "scripts": {
-    "test": "mocha -b --no-diff test/spec.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://gitlab.com/GCSBOSS/muhb.git"
-  },
-  "keywords": [
-    "http",
-    "request",
-    "simple"
-  ],
-  "author": "gcsboss",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://gitlab.com/GCSBOSS/muhb/issues"
-  },
-  "homepage": "https://gitlab.com/GCSBOSS/muhb#readme"
+    "name": "muhb",
+    "version": "0.0.2",
+    "description": "A simple set of functions for coding easy to read HTTP requests.",
+    "main": "lib/index.js",
+    "scripts": {
+      "test": "mocha -b --no-diff test/*.js",
+      "coverage": "nyc -r html -r text-summary mocha -b --no-diff test/*.js"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://gitlab.com/GCSBOSS/muhb.git"
+    },
+    "keywords": [
+        "http",
+        "request",
+        "simple",
+        "api",
+        "test",
+        "easy",
+        "rest"
+    ],
+    "author": "Guilherme C. Souza",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://gitlab.com/GCSBOSS/muhb/issues"
+    },
+    "homepage": "https://gitlab.com/GCSBOSS/muhb#readme"
 }
