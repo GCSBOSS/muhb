@@ -3,7 +3,7 @@
     node: true
     es6: true
   parserOptions:
-    ecmaVersion: 8
+    ecmaVersion: 2018
   rules:
     no-dupe-args: error
     no-dupe-keys: error
@@ -18,7 +18,7 @@
     no-alert: error
     no-else-return: error
     no-eq-null: error
-    no-eval: error
+    no-eval: warn
     no-implicit-coercion: error
     no-implied-eval: error
     no-iterator: error
