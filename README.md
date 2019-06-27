@@ -1,19 +1,22 @@
 # MUHB
 
-Muhb is a simple library for writing easy to read HTTP requet code.
+**M**ethod, **U**RL, **H**eaders and **B**ody
 
-It is recommended for writing test cases, and other unofficial purposes.
+- Is a simple library for writing easy to read HTTP requet code.
+- It is recommended for writing test cases, and other "unofficial" purposes.
+- Run over promises.
 
-Muhb run over promises.
-
-> Obs.: Do not use it in production.
+> Obs.: Do not use it in production YET.
 
 ## Method Signatures
 
-- GET, DELETE, HEAD and OPTIONS: `method ( String url [, Object headers] )`
-- POST, PUT and PATCH: `method ( String url [, Object headers] [, String body] )`
+MUHB exposes the same signature for all available methods:
+
+`method ( String url [, Object headers] [, String body] )`
 
 ## Usage
+
+Install with: `npm i muhb`.
 
 Getting NodeJS homepage:
 
@@ -36,7 +39,24 @@ Sending headers:
 ```js
 const { put } = require('muhb');
 
-var { status, headers, body } = await put('https://nodejs.org/en/', { myHeader: 'example' }, 'key=value&key=value');
+var { status, headers, body } = await put(
+    'https://nodejs.org/en/',
+    { myHeader: 'example' },
+    'key=value&key=value'
+);
+```
+
+If you would like MUHB to not generate automatic content and date headers, send
+a ghost parameter like this:
+
+```js
+const { put } = require('muhb');
+
+var { status, headers, body } = await put(
+    'https://nodejs.org/en/',
+    { '--no-auto': true, myHeader: 'example' },
+    'key=value&key=value'
+);
 ```
 
 Having all available muhb methods:
@@ -54,4 +74,5 @@ muhb.options //=> [function]
 ```
 
 ## Contributing
-We will be delighted to receive your [issues](https://gitlab.com/GCSBOSS/muhb/issues/new) and [MRs](https://gitlab.com/GCSBOSS/muhb/merge_requests/new).
+We will be delighted to receive your [issues](https://gitlab.com/GCSBOSS/muhb/issues/new)
+and [MRs](https://gitlab.com/GCSBOSS/muhb/merge_requests/new).
