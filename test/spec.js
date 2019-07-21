@@ -102,3 +102,18 @@ describe('Automatic Headers', function(){
     });
 
 });
+
+describe('Root Definition', function(){
+
+    it('should properly reach a rooted GET endpoint', async function(){
+        let base = muhb.root(HTTPBIN_URL);
+        assert('post' in base);
+        assert('get' in base);
+        let r = await base.get('/get');
+        assert.strictEqual(r.status, 200);
+        assert.strictEqual(typeof r.headers, 'object');
+        let o = JSON.parse(r.body);
+        assert.strictEqual(typeof o.args, 'object');
+    });
+
+});
