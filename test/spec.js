@@ -1,6 +1,6 @@
 const assert = require('assert');
 const muhb = require('../lib/index.js');
-const HTTPBIN_URL = process.env.HTTPBIN_URL || 'http://localhost';
+const HTTPBIN_URL = process.env.HTTPBIN_URL || 'http://localhost/';
 
 describe('Verbs', function(){
 
@@ -99,6 +99,118 @@ describe('Automatic Headers', function(){
         assert(!o.headers.Date);
         assert(!o.headers['Content-Type']);
         assert(!o.headers['Content-Length']);
+    });
+
+});
+
+describe('Root Definition', function(){
+
+    it('should properly reach a rooted GET endpoint', async function(){
+        let base = muhb.root(HTTPBIN_URL);
+        assert('post' in base);
+        assert('get' in base);
+        let r = await base.get('/get');
+        assert.strictEqual(r.status, 200);
+        assert.strictEqual(typeof r.headers, 'object');
+        let o = JSON.parse(r.body);
+        assert.strictEqual(typeof o.args, 'object');
+    });
+
+});
+
+
+describe('Assertions', function(){
+
+    var ep = muhb.root(HTTPBIN_URL);
+
+    it('should be ok asserting truths over http status code', async function(){
+        let { assert: ass } = await ep.get('/get');
+        assert.doesNotThrow( () => ass.status.is(200) );
+        assert.doesNotThrow( () => ass.status.in([200, 201])  );
+        assert.doesNotThrow( () => ass.status.not(201) );
+        assert.doesNotThrow( () => ass.status.notIn([202, 201]) );
+        assert.doesNotThrow( () => ass.status.type(2) );
+        assert.doesNotThrow( () => ass.status.notType(3) );
+    });
+
+    it('should throw asserting falsehoods over http status code', async function(){
+        let { assert: ass } = await ep.get('/get');
+        assert.throws( () => ass.status.is(201) );
+        assert.throws( () => ass.status.in([202, 201])  );
+        assert.throws( () => ass.status.not(200) );
+        assert.throws( () => ass.status.notIn([200, 201]) );
+        assert.throws( () => ass.status.type(3) );
+        assert.throws( () => ass.status.notType(2) );
+    });
+
+    it('should be ok asserting truths over http headers', async function(){
+        let { assert: ass } = await ep.get('/get');
+        assert.doesNotThrow( () => ass.headers.has('content-length').has('date') );
+        assert.doesNotThrow( () => ass.headers.match('content-type', 'application/json') );
+    });
+
+    it('should throw asserting falsehoods over http headers', async function(){
+        let { assert: ass } = await ep.get('/get');
+        assert.throws( () => ass.headers.has('x-none') );
+        assert.throws( () => ass.headers.match('content-type', 'text/html') );
+    });
+
+    it('should be ok asserting truths over response body', async function(){
+        let { assert: ass } = await ep.get('/user-agent');
+        assert.doesNotThrow( () => ass.body.exactly('{\n  "user-agent": null\n}\n') );
+        assert.doesNotThrow( () => ass.body.contains('user-agent') );
+        assert.doesNotThrow( () => ass.body.match(/null/g) );
+        assert.doesNotThrow( () => ass.body.type('application/json') );
+        assert.doesNotThrow( () => ass.body.length(25) );
+    });
+
+    it('should throw asserting falsehoods over response body', async function(){
+        let { assert: ass } = await ep.get('/');
+        assert.throws( () => ass.body.exactly('barfoo') );
+        assert.throws( () => ass.body.contains('baz') );
+        assert.throws( () => ass.body.match(/bah/) );
+        assert.throws( () => ass.body.type('image/jpg') );
+        assert.throws( () => ass.body.length(1) );
+        assert.throws( () => ass.body.json );
+    });
+
+    it('should be ok asserting truths over json response body', async function(){
+        let { assert: ass } = await ep.get('/user-agent');
+        let assJSON = ass.body.json;
+        assert.doesNotThrow( () => assJSON.hasKey('user-agent') );
+        assert.doesNotThrow( () => assJSON.match('user-agent', null) );
+        delete assJSON.object['user-agent'];
+        assert.doesNotThrow( () => assJSON.empty() );
+    });
+
+    it('should throw asserting falsehoods over json response body', async function(){
+        let { assert: ass } = await ep.get('/user-agent');
+        let assJSON = ass.body.json;
+        assert.throws( () => assJSON.hasKey('barfoo') );
+        assert.throws( () => assJSON.match('user-agent', 'bah') );
+        assert.throws( () => assJSON.empty(/bah/) );
+        assert.throws( () => assJSON.array );
+    });
+
+    it('should be ok asserting truths over json array response body', async function(){
+        let { assert: ass } = await ep.get('/user-agent');
+        let assJSON = ass.body.json;
+        assJSON.object = [ 'foo', 'bar' ];
+        let assArr = assJSON.array;
+        assert.doesNotThrow( () => assArr.match(1, 'bar') );
+        assert.doesNotThrow( () => assArr.includes('bar') );
+        assJSON.object = [];
+        assert.doesNotThrow( () => assJSON.array.empty() );
+    });
+
+    it('should throw asserting falsehoods over json array response body', async function(){
+        let { assert: ass } = await ep.get('/user-agent');
+        let assJSON = ass.body.json;
+        assJSON.object = [ 'bar', 'foo' ];
+        let assArr = assJSON.array;
+        assert.throws( () => assArr.match(1, 'bar') );
+        assert.throws( () => assArr.includes('baz') );
+        assert.throws( () => assArr.empty() );
     });
 
 });
