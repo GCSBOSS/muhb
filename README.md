@@ -73,6 +73,47 @@ muhb.head //=> [function]
 muhb.options //=> [function]
 ```
 
+Testing response data:
+
+```js
+var { assert } = await get('https://example.com');
+
+// Assert about your reposnse body.
+assert.body.exactly('foobar');
+assert.body.contains('oba');
+assert.body.match(/oo.a/);
+
+// Mostly chainable.
+assert.body.type('application/json').length(23);
+
+// Test JSON bodies.
+assert.body.json
+    .hasKey('foo')
+    .match('foo', 'bar')
+    .empty(); // test for {}
+
+// Test JSON array.
+assert.body.json.array
+    .match(1, 'bar')
+    .includes('foo')
+    .empty();
+
+// Assert about response status code
+assert.status.is(200);
+assert.status.not(400);
+assert.status.in([ 200, 203, 404 ]);
+assert.status.notIn([ 500, 403, 201 ]);
+assert.status.type(2); // Test for 2xx
+assert.status.notType(5) // Test for NOT 5xx
+
+// Assert about response headers
+assert.headers
+    .has('authorization')
+    .match('connection', 'close');
+
+```
+
+
 ## Contributing
 We will be delighted to receive your [issues](https://gitlab.com/GCSBOSS/muhb/issues/new)
 and [MRs](https://gitlab.com/GCSBOSS/muhb/merge_requests/new).
