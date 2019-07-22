@@ -6,8 +6,6 @@
 - It is recommended for writing test cases, and other "unofficial" purposes.
 - Run over promises.
 
-> Obs.: Do not use it in production YET.
-
 ## Method Signatures
 
 MUHB exposes the same signature for all available methods:
