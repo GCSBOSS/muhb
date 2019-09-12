@@ -2,15 +2,10 @@
 
 **M**ethod, **U**RL, **H**eaders and **B**ody
 
-- Is a simple library for writing easy to read HTTP requet code.
-- It is recommended for writing test cases, and other "unofficial" purposes.
+- Easy to read HTTP requets.
 - Run over promises.
-
-## Method Signatures
-
-MUHB exposes the same signature for all available methods:
-
-`method ( String url [, Object headers] [, String body] )`
+- Built-in assertion functionality.
+- Send request bulks with pooling strategy.
 
 ## Usage
 
@@ -19,10 +14,16 @@ Install with: `npm i muhb`.
 Getting NodeJS homepage:
 
 ```js
-const { get } = require('muhb');
+const muhb = require('muhb');
 
-var { status, headers, body } = await get('https://nodejs.org/en/');
+var { status, headers, body } = await muhb('get', 'https://nodejs.org/en/');
 ```
+
+### Shorthands
+
+MUHB exposes a short signature for all HTTP verbs:
+
+`method ( String url [, Object headers] [, String body] )`
 
 Posting a random form:
 
@@ -71,14 +72,15 @@ muhb.head //=> [function]
 muhb.options //=> [function]
 ```
 
-All in one:
+If you need to access the nodejs `res` object, all muhb methods return it modified
+to have our `status` and `body` keys.
 
 ```js
-const muhb = require('muhb');
+const { get } = require('muhb');
+let res = await get('https://nodejs.org/en/');
+```
 
-let response = await muhb('post', 'https://nodejs.org/en', { foo: 'bar' }, 'key=value&key=value');
-
-## Assertions
+### Assertions
 Testing response data:
 
 ```js
@@ -117,6 +119,26 @@ assert.headers
     .has('authorization')
     .match('connection', 'close');
 ```
+
+### Pooling
+
+Define a pool with a max size of 10 and a timeout of 2 seconds:
+
+```js
+const { pool } = require('muhb');
+let myPool = pool(10, 2000);
+```
+
+Then run the pool over an array of say request bodies:
+
+```js
+let bodies = 'abcdefghijklmnopqrstuvwxyz'.split('');
+myPool.post(bodies, 'http://localhost/fail', letter => letter);
+```
+
+The first argument must be an array which will be the bulk subject. Next three
+parameters are either functions or values for respectively **url**, **headers**
+(*optional*) and **body** (*optional*).
 
 ## Contributing
 We will be delighted to receive your [issues](https://gitlab.com/GCSBOSS/muhb/issues/new)
