@@ -1,6 +1,6 @@
 const assert = require('assert');
 const muhb = require('../lib/index.js');
-const HTTPBIN_URL = process.env.HTTPBIN_URL || 'http://localhost/';
+const HTTPBIN_URL = process.env.HTTPBIN_URL || 'http://localhost:8066/';
 
 describe('Verbs', function(){
 
@@ -12,7 +12,7 @@ describe('Verbs', function(){
         assert.strictEqual(typeof o.args, 'object');
     });
 
-    it('should properly reach a GET endpoint', async function(){
+    it('should properly reach a HEAD endpoint', async function(){
         let r = await muhb.head(HTTPBIN_URL + '/get');
         assert.strictEqual(r.status, 200);
         assert.strictEqual(typeof r.headers, 'object');
