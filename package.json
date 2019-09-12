@@ -12,18 +12,18 @@
       "url": "git+https://gitlab.com/GCSBOSS/muhb.git"
     },
     "keywords": [
-        "http",
-        "request",
-        "simple",
-        "api",
-        "test",
-        "easy",
-        "rest"
+      "http",
+      "request",
+      "simple",
+      "api",
+      "test",
+      "easy",
+      "rest"
     ],
     "author": "Guilherme C. Souza",
     "license": "MIT",
     "bugs": {
-        "url": "https://gitlab.com/GCSBOSS/muhb/issues"
+      "url": "https://gitlab.com/GCSBOSS/muhb/issues"
     },
     "homepage": "https://gitlab.com/GCSBOSS/muhb#readme"
 }
