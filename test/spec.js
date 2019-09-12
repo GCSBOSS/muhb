@@ -233,3 +233,27 @@ describe('Timeout', function(){
     });
 
 });
+
+describe('Pooling', function(){
+
+    it('Should reach all the endpoint as many times as the length of source', async function(){
+        this.timeout(5000);
+        let results = await muhb.pool(2, 2300).post(
+            [ 'abc', 'def', 'ghi', 'jkf' ],
+            HTTPBIN_URL + '/delay/2',
+            a => a
+        );
+        results.forEach( res => res.assert.status.is(200));
+    });
+
+    it('Should timeout requests according to pool rules', async function(){
+        this.timeout(5000);
+        let results = await muhb.pool(2, 2300).post(
+            [ '2', '2', '3', '2' ],
+            d => HTTPBIN_URL + '/delay/' + d
+        );
+        results[1].assert.status.is(200);
+        assert(results[2].message.indexOf('timeout 2300ms') > -1);
+    });
+
+});
