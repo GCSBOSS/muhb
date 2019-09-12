@@ -71,6 +71,14 @@ muhb.head //=> [function]
 muhb.options //=> [function]
 ```
 
+All in one:
+
+```js
+const muhb = require('muhb');
+
+let response = await muhb('post', 'https://nodejs.org/en', { foo: 'bar' }, 'key=value&key=value');
+
+## Assertions
 Testing response data:
 
 ```js
@@ -108,9 +116,7 @@ assert.status.notType(5) // Test for NOT 5xx
 assert.headers
     .has('authorization')
     .match('connection', 'close');
-
 ```
-
 
 ## Contributing
 We will be delighted to receive your [issues](https://gitlab.com/GCSBOSS/muhb/issues/new)
