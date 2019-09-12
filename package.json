@@ -1,7 +1,7 @@
 {
   "name": "muhb",
-  "version": "1.0.0",
-  "description": "A simple set of functions for coding easy to read HTTP requests.",
+  "version": "2.0.0",
+  "description": "A set of functions for coding easy to read HTTP requests.",
   "main": "lib/main.js",
   "scripts": {
     "test": "mocha -b --no-diff test/*.js",
@@ -15,10 +15,13 @@
     "http",
     "request",
     "simple",
-    "api",
     "test",
     "easy",
-    "rest"
+    "assert",
+    "pool",
+    "bulk",
+    "await",
+    "async"
   ],
   "author": "Guilherme C. Souza",
   "license": "MIT",

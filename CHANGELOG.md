@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.0.0] - 2019-09-12
+
+### Added
+- function to send request bulks through pooling strategy
+- timeout option to request method
+- muhb main exported function with proper parameter order
+
+### Changed
+- 'request' method to receive an object as argument
+- 'root' method name to 'context'
+- main method to return the entire res object along with muhb custom keys
+
 ## [v1.0.0] - 2019-07-22
 
 ### Added
@@ -17,8 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - automatic generation of some required request headers
 
 ## [v0.1.0] - 2018-10-14
-- Things were confused back then.
+- Things were confusing back then.
 
 [v0.1.0]: https://gitlab.com/GCSBOSS/muhb/-/tags/v0.0.1
 [v0.1.1]: https://gitlab.com/GCSBOSS/muhb/-/tags/v0.1.1
 [v1.0.0]: https://gitlab.com/GCSBOSS/muhb/-/tags/v1.0.0
+[v2.0.0]: https://gitlab.com/GCSBOSS/muhb/-/tags/v2.0.0
