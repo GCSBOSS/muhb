@@ -1,6 +1,6 @@
 const assert = require('assert');
-const muhb = require('../lib/index.js');
-const HTTPBIN_URL = process.env.HTTPBIN_URL || 'http://localhost:8066/';
+const muhb = require('../lib/main.js');
+const HTTPBIN_URL = process.env.HTTPBIN_URL || 'http://localhost:8066';
 
 describe('Verbs', function(){
 
@@ -106,7 +106,7 @@ describe('Automatic Headers', function(){
 describe('Root Definition', function(){
 
     it('should properly reach a rooted GET endpoint', async function(){
-        let base = muhb.root(HTTPBIN_URL);
+        let base = muhb.context(HTTPBIN_URL);
         assert('post' in base);
         assert('get' in base);
         let r = await base.get('/get');
@@ -118,10 +118,9 @@ describe('Root Definition', function(){
 
 });
 
-
 describe('Assertions', function(){
 
-    var ep = muhb.root(HTTPBIN_URL);
+    var ep = muhb.context(HTTPBIN_URL);
 
     it('should be ok asserting truths over http status code', async function(){
         let { assert: ass } = await ep.get('/get');

@@ -2,7 +2,7 @@
     "name": "muhb",
     "version": "1.0.0",
     "description": "A simple set of functions for coding easy to read HTTP requests.",
-    "main": "lib/index.js",
+    "main": "lib/main.js",
     "scripts": {
       "test": "mocha -b --no-diff test/*.js",
       "coverage": "nyc -r html -r text-summary mocha -b --no-diff test/*.js"
