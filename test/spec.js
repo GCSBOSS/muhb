@@ -285,4 +285,10 @@ describe('Cookies', function(){
         assert.strictEqual(cookies.test, 'foobar');
     });
 
+    it('Should send cookies given on input object', async function(){
+        let { cookies } = await muhb.get(HTTPBIN_URL + '/cookies/set/test/foofoo');
+        let { assert } = await muhb.get(HTTPBIN_URL + '/cookies', { cookies });
+        assert.body.contains('foofoo');
+    });
+
 });
