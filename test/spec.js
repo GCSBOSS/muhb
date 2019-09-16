@@ -256,4 +256,14 @@ describe('Pooling', function(){
         assert(results[2].message.indexOf('timeout 2300ms') > -1);
     });
 
+    it('Should reach endpoints with dynamic method', async function(){
+        let sources = [ 'GET', 'POST', 'PUT', 'DELETE' ];
+        let results = await muhb.pool(2, 2300).request({
+            sources,
+            method: m => m,
+            url: HTTPBIN_URL + '/anything'
+        });
+        results.forEach( (res, i) => res.assert.body.contains(sources[i]));
+    });
+
 });
