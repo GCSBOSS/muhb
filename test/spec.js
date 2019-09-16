@@ -277,3 +277,12 @@ describe('HTTPS', function(){
     });
 
 });
+
+describe('Cookies', function(){
+
+    it('Should parse cookies set by the server', async function(){
+        let { cookies } = await muhb.get(HTTPBIN_URL + '/cookies/set/test/foobar');
+        assert.strictEqual(cookies.test, 'foobar');
+    });
+
+});
