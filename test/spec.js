@@ -257,3 +257,13 @@ describe('Pooling', function(){
     });
 
 });
+
+describe('HTTPS', function(){
+
+    it('Should send HTTPS requests just fine', async function(){
+        let r = await muhb.get('https://example.com');
+        r.assert.status.is(200);
+        r.assert.body.contains('Example Domain');
+    });
+
+});
