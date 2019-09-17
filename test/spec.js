@@ -102,7 +102,7 @@ describe('Automatic Headers', function(){
     });
 
     it('Should not generate automatic headers when specified', async function(){
-        let { body } = await muhb.post(HTTPBIN_URL + '/post', {'--no-auto': true}, 'haha');
+        let { body } = await muhb.post(HTTPBIN_URL + '/post', {'no-auto': true}, 'haha');
         let o = JSON.parse(body);
         assert(!o.headers.Date);
         assert(!o.headers['Content-Type']);
@@ -274,6 +274,21 @@ describe('HTTPS', function(){
         let r = await muhb.get('https://example.com');
         r.assert.status.is(200);
         r.assert.body.contains('Example Domain');
+    });
+
+});
+
+describe('Cookies', function(){
+
+    it('Should parse cookies set by the server', async function(){
+        let { cookies } = await muhb.get(HTTPBIN_URL + '/cookies/set/test/foobar');
+        assert.strictEqual(cookies.test, 'foobar');
+    });
+
+    it('Should send cookies given on input object', async function(){
+        let { cookies } = await muhb.get(HTTPBIN_URL + '/cookies/set/test/foofoo');
+        let { assert } = await muhb.get(HTTPBIN_URL + '/cookies', { cookies });
+        assert.body.contains('foofoo');
     });
 
 });

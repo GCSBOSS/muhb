@@ -53,7 +53,7 @@ const { put } = require('muhb');
 
 var { status, headers, body } = await put(
     'https://nodejs.org/en/',
-    { '--no-auto': true, myHeader: 'example' },
+    { 'no-auto': true, myHeader: 'example' },
     'key=value&key=value'
 );
 ```
