@@ -102,7 +102,7 @@ describe('Automatic Headers', function(){
     });
 
     it('Should not generate automatic headers when specified', async function(){
-        let { body } = await muhb.post(HTTPBIN_URL + '/post', {'--no-auto': true}, 'haha');
+        let { body } = await muhb.post(HTTPBIN_URL + '/post', {'no-auto': true}, 'haha');
         let o = JSON.parse(body);
         assert(!o.headers.Date);
         assert(!o.headers['Content-Type']);
