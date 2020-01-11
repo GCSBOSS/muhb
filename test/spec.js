@@ -1,4 +1,5 @@
 const assert = require('assert');
+const crypto = require('crypto');
 const muhb = require('../lib/main.js');
 const HTTPBIN_URL = process.env.HTTPBIN_URL || 'http://localhost:8066';
 
@@ -73,6 +74,16 @@ describe('Verbs', function(){
             url: 'http://10.4.5.254:8347',
             timeout: 2000
         }), /timeout/g);
+    });
+
+    it('Should send body from Buffer object', async function(){
+        let { assert, body } = await muhb.post(
+            HTTPBIN_URL + '/post',
+            { 'Content-Type': 'application/json' },
+            crypto.randomBytes(20)
+        );
+        assert.status.is(200);
+        assert.body.contains('base64');
     });
 
 });
