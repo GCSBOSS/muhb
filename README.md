@@ -120,6 +120,21 @@ assert.headers
     .match('connection', 'close');
 ```
 
+### Authentication
+
+> As of now the only auth method supported is MD5 Digest.
+
+You must ensure your server responds with `401` and a `WWW-Authenticate` header
+so muhb knows to perform the auth.
+
+Then just send your credentials in the headers object as follows:
+
+```
+let { body } = await post('http://example.com', {
+    auth: { username: 'my-user', password: 'my-pass' }
+});
+```
+
 ### Pooling
 
 Define a pool with a max size of 10 and a timeout of 2 seconds:
