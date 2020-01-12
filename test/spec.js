@@ -303,3 +303,16 @@ describe('Cookies', function(){
     });
 
 });
+
+describe('Auth', function(){
+
+    it('Should respond to MD5 Digest challenge', async function(){
+        let { assert } = await muhb.get(
+            HTTPBIN_URL + '/digest-auth/auth/my-user/my-pwd/MD5',
+            { auth: { username: 'my-user', password: 'my-pwd' } }
+        );
+        assert.status.is(200);
+        assert.body.json.match('authenticated', true);
+    });
+
+});
