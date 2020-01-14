@@ -77,7 +77,7 @@ describe('Verbs', function(){
     });
 
     it('Should send body from Buffer object', async function(){
-        let { assert, body } = await muhb.post(
+        let { assert } = await muhb.post(
             HTTPBIN_URL + '/post',
             { 'Content-Type': 'application/json' },
             crypto.randomBytes(20)
