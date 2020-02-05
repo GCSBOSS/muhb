@@ -104,6 +104,7 @@ assert.body.json
 assert.body.json.array
     .match(1, 'bar')
     .includes('foo')
+    .length(2)
     .empty();
 
 // Assert about response status code

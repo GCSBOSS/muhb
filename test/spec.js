@@ -217,6 +217,7 @@ describe('Assertions', function(){
         let assArr = assJSON.array;
         assert.doesNotThrow( () => assArr.match(1, 'bar') );
         assert.doesNotThrow( () => assArr.includes('bar') );
+        assert.doesNotThrow( () => assArr.length(2) );
         assJSON.object = [];
         assert.doesNotThrow( () => assJSON.array.empty() );
     });
@@ -228,6 +229,7 @@ describe('Assertions', function(){
         let assArr = assJSON.array;
         assert.throws( () => assArr.match(1, 'bar') );
         assert.throws( () => assArr.includes('baz') );
+        assert.throws( () => assArr.length(1) );
         assert.throws( () => assArr.empty() );
     });
 
