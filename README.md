@@ -5,7 +5,8 @@
 - Easy to read HTTP requets.
 - Run over promises.
 - Built-in assertion functionality.
-- Send request bulks with pooling strategy.
+- Send many request over pooling strategy.
+- NO external dependencies
 
 ## Usage
 

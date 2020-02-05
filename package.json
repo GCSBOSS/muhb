@@ -1,6 +1,6 @@
 {
   "name": "muhb",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "description": "A set of functions for coding easy to read HTTP requests.",
   "main": "lib/main.js",
   "scripts": {
@@ -21,6 +21,8 @@
     "pool",
     "bulk",
     "await",
+    "promise",
+    "client",
     "async"
   ],
   "author": "Guilherme C. Souza",
