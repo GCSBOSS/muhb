@@ -350,4 +350,11 @@ describe('Auth', function(){
         assert.body.json.match('authenticated', true);
     });
 
+    it('Should accept user and password via URL', async function(){
+        let url = HTTPBIN_URL.split('//').join('//usr:pwd@');
+        let { assert } = await muhb.get(url + '/digest-auth/auth/usr/pwd/MD5');
+        assert.status.is(200);
+        assert.body.json.match('authenticated', true);
+    });
+
 });

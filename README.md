@@ -136,6 +136,12 @@ let { body } = await post('http://example.com', {
 });
 ```
 
+Or use the user and password syntax (they will be stripped from the URL before being sent).
+
+```js
+let { body } = await post('http://my-user:my-pass@example.com');
+```
+
 ### Pooling
 
 Define a pool with a max size of 10 requests and a timeout of 2 seconds:
