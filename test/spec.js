@@ -247,34 +247,67 @@ describe('Timeout', function(){
 
 describe('Pooling', function(){
 
-    it('Should reach all the endpoint as many times as the length of source', async function(){
+    it('Should reach the endpoint the correct amount of times', function(done){
         this.timeout(5000);
-        let results = await muhb.pool(2, 2300).post(
-            [ 'abc', 'def', 'ghi', 'jkf' ],
-            HTTPBIN_URL + '/delay/2',
-            a => a
-        );
-        results.forEach( res => res.assert.status.is(200));
+        let p = new muhb.Pool();
+        'abcd'.split('').forEach(b => p.post(HTTPBIN_URL + '/delay/2', b));
+
+        p.on('finish', function(resArr){
+            assert.strictEqual(resArr.length, 4);
+            resArr.forEach( res => res.assert.status.is(200) );
+            done();
+        });
     });
 
     it('Should timeout requests according to pool rules', async function(){
         this.timeout(5000);
-        let results = await muhb.pool(2, 2300).post(
-            [ '2', '2', '3', '2' ],
-            d => HTTPBIN_URL + '/delay/' + d
-        );
-        results[1].assert.status.is(200);
-        assert(results[2].message.indexOf('timeout 2300ms') > -1);
+
+        let errs = 0;
+        let p = new muhb.Pool({ size: 2, timeout: 2300 });
+        '2232'.split('').forEach(
+            d => p.post(HTTPBIN_URL + '/delay/' + d).catch(() => errs++ ));
+
+        let resArr = await p.done();
+        assert.strictEqual(resArr.length, 4);
+        resArr[1].assert.status.is(200);
+        assert(resArr[3].message.indexOf('timeout 2300ms') > -1);
+        assert.strictEqual(errs, 1);
     });
 
-    it('Should reach endpoints with dynamic method', async function(){
-        let sources = [ 'GET', 'POST', 'PUT', 'DELETE' ];
-        let results = await muhb.pool(2, 2300).request({
-            sources,
-            method: m => m,
-            url: HTTPBIN_URL + '/anything'
-        });
-        results.forEach( (res, i) => res.assert.body.contains(sources[i]));
+    it('Should allow updating pool settings on the fly', async function(){
+        this.timeout(4500);
+        let p = new muhb.Pool({ size: 1 });
+        await p.post(HTTPBIN_URL + '/delay/2', { 'X-Header': 'Coverage' });
+        p.size = 3;
+        p.post(HTTPBIN_URL + '/delay/2');
+        p.post(HTTPBIN_URL + '/delay/2');
+        p.post(HTTPBIN_URL + '/delay/2');
+        await p.done();
+    });
+
+    it('Should stop processing queued requests when paused', async function(){
+        let p = new muhb.Pool({ size: 2 });
+        p.post(HTTPBIN_URL + '/delay/1');
+        p.post(HTTPBIN_URL + '/delay/1');
+        p.post(HTTPBIN_URL + '/delay/1');
+        p.post(HTTPBIN_URL + '/delay/1');
+        p.post(HTTPBIN_URL + '/delay/1');
+        await p.pause();
+        assert.strictEqual(p.queue.length, 3);
+    });
+
+    it('Should finish processing when resuming a paused pool', async function(){
+        this.timeout(3500);
+        let p = new muhb.Pool({ size: 2 });
+        p.post(HTTPBIN_URL + '/delay/1');
+        p.post(HTTPBIN_URL + '/delay/1');
+        p.post(HTTPBIN_URL + '/delay/1');
+        p.post(HTTPBIN_URL + '/delay/1');
+        p.post(HTTPBIN_URL + '/delay/1');
+        await p.pause();
+        let r = await p.resume();
+        assert.strictEqual(r.length, 3);
+        assert.strictEqual(p.queue.length, 0);
     });
 
 });
