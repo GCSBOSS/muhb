@@ -129,7 +129,7 @@ so muhb knows to perform the auth.
 
 Then just send your credentials in the headers object as follows:
 
-```
+```js
 let { body } = await post('http://example.com', {
     auth: { username: 'my-user', password: 'my-pass' }
 });
@@ -137,23 +137,43 @@ let { body } = await post('http://example.com', {
 
 ### Pooling
 
-Define a pool with a max size of 10 and a timeout of 2 seconds:
+Define a pool with a max size of 10 requests and a timeout of 2 seconds:
 
 ```js
-const { pool } = require('muhb');
-let myPool = pool(10, 2000);
+const { Pool } = require('muhb');
+let myPool = new Pool({ size: 10, timeout: 2000 });
 ```
 
 Then run the pool over an array of say request bodies:
 
 ```js
 let bodies = 'abcdefghijklmnopqrstuvwxyz'.split('');
-myPool.post(bodies, 'http://localhost/fail', letter => letter);
+bodies.forEach( body => myPool.post('http://localhost/fail', body) );
 ```
 
-The first argument must be an array which will be the bulk subject. Next three
-parameters are either functions or values for respectively **url**, **headers**
-(*optional*) and **body** (*optional*).
+Wait until all requests recive responses.
+
+```js
+// With promises
+let responses = await myPool.done();
+
+// With events
+myPool.on('finish', responses => console.log(responses));
+```
+
+Wait for a single request in the pool to finish.
+
+```js
+let res = await myPool.post('http://localhost/fail');
+```
+
+Act on every request that is responded.
+
+```js
+myPool.on('response', (req, res) => {
+    console.log(res.status);
+});
+```
 
 ## Contributing
 We will be delighted to receive your [issues](https://gitlab.com/GCSBOSS/muhb/issues/new)
