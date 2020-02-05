@@ -104,6 +104,7 @@ assert.body.json
 assert.body.json.array
     .match(1, 'bar')
     .includes('foo')
+    .length(2)
     .empty();
 
 // Assert about response status code
@@ -133,6 +134,12 @@ Then just send your credentials in the headers object as follows:
 let { body } = await post('http://example.com', {
     auth: { username: 'my-user', password: 'my-pass' }
 });
+```
+
+Or use the user and password syntax (they will be stripped from the URL before being sent).
+
+```js
+let { body } = await post('http://my-user:my-pass@example.com');
 ```
 
 ### Pooling

@@ -217,6 +217,7 @@ describe('Assertions', function(){
         let assArr = assJSON.array;
         assert.doesNotThrow( () => assArr.match(1, 'bar') );
         assert.doesNotThrow( () => assArr.includes('bar') );
+        assert.doesNotThrow( () => assArr.length(2) );
         assJSON.object = [];
         assert.doesNotThrow( () => assJSON.array.empty() );
     });
@@ -228,6 +229,7 @@ describe('Assertions', function(){
         let assArr = assJSON.array;
         assert.throws( () => assArr.match(1, 'bar') );
         assert.throws( () => assArr.includes('baz') );
+        assert.throws( () => assArr.length(1) );
         assert.throws( () => assArr.empty() );
     });
 
@@ -344,6 +346,13 @@ describe('Auth', function(){
             HTTPBIN_URL + '/digest-auth/auth/my-user/my-pwd/MD5',
             { auth: { username: 'my-user', password: 'my-pwd' } }
         );
+        assert.status.is(200);
+        assert.body.json.match('authenticated', true);
+    });
+
+    it('Should accept user and password via URL', async function(){
+        let url = HTTPBIN_URL.split('//').join('//usr:pwd@');
+        let { assert } = await muhb.get(url + '/digest-auth/auth/usr/pwd/MD5');
         assert.status.is(200);
         assert.body.json.match('authenticated', true);
     });
