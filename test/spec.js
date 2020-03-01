@@ -358,3 +358,15 @@ describe('Auth', function(){
     });
 
 });
+
+describe('Regressions', function(){
+
+    it('Should send all http methods through the pool', async function(){
+        let p = new muhb.Pool();
+        let r1 = await p.post(HTTPBIN_URL + '/post');
+        let r2 = await p.put(HTTPBIN_URL + '/put');
+        assert.strictEqual(r1.status, 200);
+        assert.strictEqual(r2.status, 200);
+    });
+
+});
