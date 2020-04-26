@@ -370,3 +370,13 @@ describe('Regressions', function(){
     });
 
 });
+
+describe('Other Features', function(){
+
+    it('Should return buffers for binary response bodies', async function(){
+        let { body } = await muhb.get(HTTPBIN_URL + '/bytes/16');
+        assert(body instanceof Buffer);
+        assert.strictEqual(body.length, 16);
+    });
+
+});
