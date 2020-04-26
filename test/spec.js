@@ -9,8 +9,7 @@ describe('Verbs', function(){
         let r = await muhb.get(HTTPBIN_URL + '/get');
         assert.strictEqual(r.status, 200);
         assert.strictEqual(typeof r.headers, 'object');
-        let o = JSON.parse(r.body);
-        assert.strictEqual(typeof o.args, 'object');
+        assert.strictEqual(typeof r.body.args, 'object');
     });
 
     it('Should properly reach a HEAD endpoint', async function(){
@@ -24,10 +23,10 @@ describe('Verbs', function(){
         let r = await muhb.post(HTTPBIN_URL + '/post', 'balela');
         assert.strictEqual(r.status, 200);
         assert.strictEqual(typeof r.headers, 'object');
-        let o = JSON.parse(r.body);
+        let o = r.body;
         assert.strictEqual(o.data, 'balela');
         r = await muhb.post(HTTPBIN_URL + '/post', {'thak-thek': 'that'});
-        o = JSON.parse(r.body);
+        o = r.body;
         assert.strictEqual(o.headers['Thak-Thek'], 'that');
     });
 
@@ -35,10 +34,10 @@ describe('Verbs', function(){
         let r = await muhb.put(HTTPBIN_URL + '/put', 'balela');
         assert.strictEqual(r.status, 200);
         assert.strictEqual(typeof r.headers, 'object');
-        let o = JSON.parse(r.body);
+        let o = r.body;
         assert.strictEqual(o.data, 'balela');
         r = await muhb.put(HTTPBIN_URL + '/put', {'thak-thek': 'that'});
-        o = JSON.parse(r.body);
+        o = r.body;
         assert.strictEqual(o.headers['Thak-Thek'], 'that');
     });
 
@@ -46,10 +45,10 @@ describe('Verbs', function(){
         let r = await muhb.patch(HTTPBIN_URL + '/patch', 'balela');
         assert.strictEqual(r.status, 200);
         assert.strictEqual(typeof r.headers, 'object');
-        let o = JSON.parse(r.body);
+        let o = r.body;
         assert.strictEqual(o.data, 'balela');
         r = await muhb.patch(HTTPBIN_URL + '/patch', {'thak-thek': 'that'});
-        o = JSON.parse(r.body);
+        o = r.body;
         assert.strictEqual(o.headers['Thak-Thek'], 'that');
     });
 
@@ -57,7 +56,7 @@ describe('Verbs', function(){
         let r = await muhb.delete(HTTPBIN_URL + '/delete');
         assert.strictEqual(r.status, 200);
         assert.strictEqual(typeof r.headers, 'object');
-        let o = JSON.parse(r.body);
+        let o = r.body;
         assert.strictEqual(typeof o.args, 'object');
     });
 
