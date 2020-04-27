@@ -237,13 +237,7 @@ describe('Assertions', function(){
 
 describe('Timeout', function(){
 
-    it('Should reject when response time exceeds setup timeout', function(){
-        assert.rejects(() => muhb.request({
-            method: 'GET',
-            url: HTTPBIN_URL + '/delay/10000',
-            timeout: 1000
-        }), /timeout/g);
-    });
+
 
 });
 
@@ -377,6 +371,20 @@ describe('Other Features', function(){
         let { body } = await muhb.get(HTTPBIN_URL + '/bytes/16');
         assert(body instanceof Buffer);
         assert.strictEqual(body.length, 16);
+    });
+
+    it('Should reject when response time exceeds setup timeout', async function(){
+        await assert.rejects(() => muhb.request({
+            method: 'GET',
+            url: HTTPBIN_URL + '/delay/10000',
+            timeout: 500
+        }), /timeout/g);
+
+        await assert.rejects(() => muhb.request({
+            method: 'GET',
+            url: HTTPBIN_URL + '/delay/10000',
+            headers: { timeout: 500 }
+        }), /timeout/g);
     });
 
 });
