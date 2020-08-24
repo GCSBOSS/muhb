@@ -1,6 +1,6 @@
 {
   "name": "muhb",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "A set of functions for coding easy to read HTTP requests.",
   "main": "lib/main.js",
   "scripts": {
